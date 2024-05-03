@@ -1,0 +1,113 @@
+cloudflare自建节点订阅：
+CF官网：https://dash.cloudflare.com/sign-up
+>. 节点测速设置为：http://www.google-analytics.com/generate_204
+
+#####丨Clash Verge Rev丨版本，支持vless节点可直接导入订阅即可#####
+
+Clash 分流设置丨重点丨   >. 订阅后，在订阅界面 - 新建Script类型（JS脚本）- 保存
+                                      >. 右键Script - 编辑文件（或双击）- 将自己编写好的丨分流、分组规则丨JS代码覆盖粘贴进去 保存 - 右键 启用
+                                          编写rules 分流、分组规则，参考订阅机场生成的规则，或参考Github在线分流地址；不用远程调用或他人编写好的JS文件，防止安全隐患
+                                          https://github.com/Loyalsoldier/clash-rules
+
+
+###若一段时间后订阅无效###
+
+      1. 重新创建环境变量：尝试更改UUID
+      >.在线生成：https://1024tools.com/uuid
+      >.打开 v2rayN软件：点击服务器-添加Vless服务器：用户ID选项-点击生成
+
+      2. 自定义域 无效，需重新 更新代码 或 绑定自己的自定义域
+          worker代码地址：https://github.com/cmliu/edgetunnel
+
+#####为何需要创建，而不是直接使用Cloudflare Warp+客户端？#####
+          1、CF客户端不提供自选IP或代理的选项，导致ChatGPT等很多国外网站无法正常使用
+          2、无法设置翻墙规则rules，只能默认代理设置，且无法做到真正的全局代理，外网监测的IP基本为就近的HK
+          3、自建提取CF节点后，数量不少，且大部分都可以正常访问ChatGPT等大陆&HK禁访网站
+          4、创建的订阅地址，可直接导入v2rayN使用，Clash需 Clash Verge 版本才可直接识别VLESS节点信息，否则需要转换（转换不稳定，经常失效需再次转换）
+               Clash Verge下载地址：https://github.com/clash-verge-rev/clash-verge-rev/releases
+
+
+#####下为已建的3个 丨订阅地址丨（1Apple丨原密、2Google丨密@kang）#####v2ray可直接用，clash meta内核需“代更“（如clash verge rev）
+
+1>-----Workers和Pages-概述-账户详细信息- 账户ID丨meishakexi：7a8d21079f2a3c13eb22cdccd33bfe77
+       账户丨meishakexi-lanth丨环境变量：UUID丨775a0eef-0ba6-4f07-bf9b-51af83edb6eb
+》》 订阅地址：https://lanth.pages.dev/775a0eef-0ba6-4f07-bf9b-51af83edb6eb
+
+2>-----Workers和Pages-概述-账户详细信息 - 账户ID丨kintance-AppleID：未查看
+       账户丨appleidkintance-warp丨环境变量：UUID丨fc1efcef-7116-4ece-be11-28d42d83e27d
+》》 订阅地址：https://appleidkintance.pages.dev/fc1efcef-7116-4ece-be11-28d42d83e27d
+
+3>-----Workers和Pages-概述-账户详细信息 - 账户ID丨kintancemail：72d1d74a5c95989e7fe6ab7289c83a2c
+       账户丨kintancemail-pm丨环境变量：UUID丨f2caff07-16cd-4cd0-a833-2b0625ecc3e8
+》》 订阅地址：https://pm-bxa.pages.dev/f2caff07-16cd-4cd0-a833-2b0625ecc3e8（未绑定域名）
+》》 订阅地址：https://kintancemail.lanth.dynv6.net/f2caff07-16cd-4cd0-a833-2b0625ecc3e8（绑定域名：https://kintancemail.lanth.dynv6.net/）
+       免费自定义域名绑定CF方法：https://www.youtube.com/watch?v=59THrmJhmAw
+
+4>-----Workers和Pages-概述-账户详细信息 - 账户ID丨kexikexi123：0d4d9b1819d6e6ea43bb409a74808810
+       账户丨kexikexi123-bedad丨环境变量：UUID丨ec235b07-2d95-4bdc-9999-eb83d5b34e58
+》》订阅地址：https://bedad.pages.dev/ec235b07-2d95-4bdc-9999-eb83d5b34e58
+
+
+<Workers和Pages>：Pages部署
+
+创建新订阅
+部署 Cloudflare Worker：
+
+建议 - 方法2 部署pages，不需要自定义域；worker部署需要添加自定义域；不需要更改 worker 中的userID，环境变量中添加自己的 UUID 即可。
+
+方法1、在 Cloudflare Worker 控制台“Workers和Pages”中选择“创建应用程序”创建一个新的 “Worker”。
+           将 worker.js 的内容粘贴到 Worker 编辑器中。
+           将第 7 行 userID 修改成你自己的 UUID 。（worker代码在最下方，复制代码替换掉默认代码）
+
+           >. 给 workers绑定 自定义域：
+               在 workers控制台的 触发器选项卡，下方点击 添加自定义域。
+               填入你已转入 CloudFlare 域名解析服务的次级域名，例如:vless.google.com后 点击添加自定义域，等待证书生效即可。
+
+大概几十秒时间，有时几秒即可生效
+
+
+方法2、在 Cloudflare Worker 控制台“Workers和Pages”中选择“创建应用程序”创建一个新的 “pages”。
+           点击“上传资产”将worker.izp或“worker文件夹”上传，点击 部署站点（不需要更改 worker 中的 UUID，后期环境变量中设置自己的 UUID 即可）
+           部署完成后点击“继续处理站点”后，选择 设置 > 环境变量 > 制作为生产环境定义变量 > 添加变量。
+           变量名称 - 填写UUID（大写），值 则为你自己生成的 UUID，后点击 保存即可。
+       >. 返回 部署 选项卡，在右下角点击 创建新部署 后，再次 重新上传 worker.zip 文件后点击 保存并部署 即可。
+    注：总计上传部署2次worker文件
+
+大概几十秒时间，有时几秒即可生效       
+
+订阅地址：
+            访问：https://[YOUR-WORKERS-URL]/[UUID] 即可获取订阅内容。
+            例如：https://bedad.pages.dev/ec235b07-2d95-4bdc-9999-eb83d5b34e58 就是你的订阅地址。
+
+
+
+给 workers绑定 自定义域：
+
+在 workers控制台的 触发器选项卡，下方点击 添加自定义域。
+填入你已转入 CloudFlare 域名解析服务的次级域名，例如:vless.google.com后 点击添加自定义域，等待证书生效即可。
+如果你是小白，你现在可以直接起飞，不用再往下看了！！！
+
+
+
+
+
+
+
+
+文章链接
+https://xiaobaikj.blogspot.com/2024/03/vpnvlessip4k.html
+
+本期视频演示地址：https://youtu.be/otTxn7gnyVo
+cloudflare官网地址：https://dash.cloudflare.com/sign-up
+
+压缩包下载地址：https://github.com/xiaobaikeji831/Cloudflare-Vless/raw/main/worker.zip
+
+UUID在线生成：https://1024tools.com/uuid
+
+免费域名创建地址：https://dynv6.com/
+
+
+V2rayN下载地址：https://github.com/2dust/v2rayN/releases
+小白使用的6.23版本
+
+Clash Verge下载地址：https://github.com/zzzgydi/clash-verge/releases
